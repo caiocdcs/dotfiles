@@ -1,0 +1,206 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "agent": {
+    "always_allow_tool_actions": true,
+    "default_profile": "write",
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "claude-sonnet-4.5",
+    },
+    "model_parameters": [],
+  },
+  "language_models": {
+    "bedrock": {
+      "authentication_method": "named_profile",
+      "region": "eu-west-1",
+      "profile": "team-te-playground-sso",
+    },
+  },
+  "base_keymap": "VSCode",
+  "telemetry": {
+    "metrics": false,
+    "diagnostics": false,
+  },
+  "buffer_font_family": "CommitMono",
+  "buffer_font_weight": 500,
+  "buffer_font_size": 15.0,
+  "buffer_line_height": { "custom": 1.8 },
+  "buffer_font_features": { "calt": false },
+
+  "ui_font_family": "CommitMono",
+  "ui_font_weight": 500,
+  "ui_font_size": 16,
+  "theme": {
+    "mode": "system",
+    "light": "Ayu Dark",
+    "dark": "One Dark",
+  },
+  "icon_theme": "Catppuccin Frappé",
+  "terminal": {
+    "font_family": "CommitMono",
+    // "shell": {
+    //   "with_arguments": {
+    //     "program": "/bin/zsh", // or path to your preferred shell
+    //     "args": ["-c", "tmux new-session -A -s \"$(basename \"$PWD\")\""]
+    //   }
+    // }
+  },
+  "cursor_blink": false,
+  "hide_mouse": "on_typing",
+  "project_panel": { "auto_fold_dirs": false },
+  "indent_guides": { "enabled": true },
+  "show_whitespaces": "selection",
+  "inlay_hints": {
+    "enabled": true,
+    "show_type_hints": true,
+    "show_parameter_hints": true,
+    "show_other_hints": true,
+    "show_background": false,
+    "edit_debounce_ms": 700,
+    "scroll_debounce_ms": 50,
+    "toggle_on_modifiers_press": {
+      "control": true,
+      "shift": true,
+      "alt": true,
+      "platform": true,
+      "function": true,
+    },
+  },
+  "languages": {
+    "Markdown": {
+      "show_completions_on_input": false,
+      "show_edit_predictions": false,
+      "show_completion_documentation": false,
+    },
+    "Zig": {
+      "show_edit_predictions": false,
+      // Formatting with ZLS matches `zig fmt`.
+      // The Zig FAQ answers some questions about `zig fmt`:
+      // https://github.com/ziglang/zig/wiki/FAQ
+      "formatter": "language_server",
+      "format_on_save": "on",
+      // Make sure that zls is the primary language server
+      "language_servers": ["zls", "..."],
+      "code_actions_on_format": {
+        // Run code actions that currently supports adding and removing discards.
+        //"source.fixAll": true,
+        // Run code actions that sorts @import declarations.
+        //"source.organizeImports": true
+      },
+    },
+    "Breeze": {
+      "language_servers": ["breeze-lsp"],
+      "file_types": ["breeze"],
+      "line_comment": "// ",
+    },
+  },
+  "lsp": {
+    "rust-analyzer": {
+      "initialization_options": {
+        "inlayHints": {
+          "enable": true,
+          "maxLength": null,
+          "lifetimeElisionHints": {
+            "enable": "skip_trivial",
+            "useParameterNames": true,
+          },
+          "closureReturnTypeHints": {
+            "enable": "always",
+          },
+        },
+        "completion": {
+          "snippets": {
+            "custom": {
+              "Arc::new": {
+                "postfix": "arc",
+                "body": ["Arc::new(${receiver})"],
+                "requires": "std::sync::Arc",
+                "scope": "expr",
+              },
+              "Some": {
+                "postfix": "some",
+                "body": ["Some(${receiver})"],
+                "scope": "expr",
+              },
+              "Ok": {
+                "postfix": "ok",
+                "body": ["Ok(${receiver})"],
+                "scope": "expr",
+              },
+              "Rc::new": {
+                "postfix": "rc",
+                "body": ["Rc::new(${receiver})"],
+                "requires": "std::rc::Rc",
+                "scope": "expr",
+              },
+              "Box::pin": {
+                "postfix": "boxpin",
+                "body": ["Box::pin(${receiver})"],
+                "requires": "std::boxed::Box",
+                "scope": "expr",
+              },
+              "vec!": {
+                "postfix": "vec",
+                "body": ["vec![${receiver}]"],
+                "description": "vec![]",
+                "scope": "expr",
+              },
+            },
+          },
+        },
+      },
+    },
+    "zls": {
+      "binary": {
+        // omit the following line if `zls` is in your PATH
+        //"path": "/path/to/zls_executable"
+      },
+      // There are two ways to set config options:
+      //   - edit your `zls.json` that applies to any editor that uses ZLS
+      //   - set in-editor config options with the `settings` field below.
+      //
+      // Further information on how to configure ZLS:
+      // https://zigtools.org/zls/configure/
+      "settings": {
+        // ...
+      },
+    },
+    "breeze-lsp": {
+      "binary": {
+        "path": "/Users/caiocesarsilva/workspace/playground/zig/breeze/zig-out/bin/breeze",
+        "arguments": ["--lsp"],
+      },
+    },
+  },
+  "context_servers": {
+    "mcp-server-puppeteer": {
+      "enabled": false,
+      "settings": {},
+    },
+    "mcp-server-context7": {
+      "enabled": true,
+      "settings": {
+        "default_minimum_tokens": "10000",
+      },
+    },
+    "comboios-mcp": {
+      "enabled": false,
+      "command": "/Users/caiocesarsilva/workspace/playground/rust/comboios-rs/target/release/comboios-mcp",
+      "args": [],
+      "env": null,
+    },
+    "postgres-context-server": {
+      "enabled": false,
+      "settings": {
+        "database_url": "postgresql://local-payment-products-admin:dbpass@localhost/local-payment-products",
+      },
+    },
+  },
+}
