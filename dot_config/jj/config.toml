@@ -1,0 +1,19 @@
+[user]
+name = "Caio Silva"
+email = "caio.cdcs@gmail.com"
+
+[signing]
+behavior = "own"
+backend = "gpg"
+key = "EB3CBE9AB8E39B60"
+
+[git]
+sign-on-push = true
+
+[aliases]
+l = ["log", "-r", "(main..@):: | (main..@)-"]
+signatures = [
+    "log",
+    "--template",
+    "commit_id.short() ++ \" \" ++ description.first_line() ++ \" [\" ++ if(signature, \"✓ signed\", \"✗ unsigned\") ++ \"]\"",
+]

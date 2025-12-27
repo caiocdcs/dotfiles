@@ -1,0 +1,20 @@
+# appearance
+font-family = MesloLGS Nerd Font Mono
+theme = Monokai Pro Ristretto
+font-size = 16
+window-inherit-font-size = true
+window-height = 33
+window-width = 130
+
+# shell
+mouse-hide-while-typing = true
+shell-integration = zsh
+clipboard-paste-protection = false
+
+# macos
+## nix handles updates
+macos-titlebar-style = native
+macos-option-as-alt = true
+quit-after-last-window-closed = true
+keybind = shift+enter=text:\n
+

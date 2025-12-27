@@ -1,0 +1,47 @@
+[column]
+    ui = auto
+[branch]
+    sort = -committerdate
+[tag]
+    sort = version:refname
+    gpgsign = true
+[init]
+    defaultBranch = main
+[diff]
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
+    conflictStyle = "diff3"
+[push]
+    default = simple
+    autoSetupRemote = true
+    followTags = true
+[fetch]
+    prune = true
+    pruneTags = true
+    all = true
+[help]
+    autocorrect = prompt
+[commit]
+    verbose = true
+    gpgsign = true
+[rerere]
+    enabled = true
+    autoupdate = true
+[core]
+    editor = zed --wait
+	ignorecase = false
+	pager = delta
+    excludesfile = ~/.gitignore
+	autocrlf = input
+[user]
+	name = Caio Silva
+	signingkey = EB3CBE9AB8E39B60
+	email = caio.cdcs@gmail.com
+
+[includeIf "gitdir:~/workspace/trustly/"]
+    path = ~/.gitconfig-work
+[merge "mergiraf"]
+	name = mergiraf
+	driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L
