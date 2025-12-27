@@ -1,201 +1,156 @@
-# Dotfiles with Chezmoi + Vaultwarden
+# Dotfiles
 
-Self-hosted Vaultwarden instance for secret management.
+Complete Mac setup with chezmoi + Vaultwarden for secret management.
 
-## Vaultwarden Setup
+## What's Included
+
+- **Shell configs:** .zshrc, .zprofile, .p10k.zsh (Powerlevel10k)
+- **Git config:** .gitconfig with signing enabled
+- **App configs:** ghostty, fish, nushell, mise, jj, gh
+- **SSH config:** .ssh/config
+- **Brewfile:** All 76+ packages
+- **Secrets:** Managed via self-hosted Vaultwarden
+
+## Quick Setup (New Mac)
+
+```bash
+# Install Homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install chezmoi and bitwarden-cli
+brew install chezmoi bitwarden-cli
+
+# Configure Vaultwarden server
+bw config server https://vault.int.cdcs.dev
+bw login caio.cdcs@gmail.com
+
+# Clone and apply dotfiles
+chezmoi init --apply git@github.com:YOUR_USERNAME/dotfiles.git
+
+# Unlock Vaultwarden and apply secrets
+export BW_SESSION=$(bw unlock --raw)
+chezmoi apply -v
+
+# Install all packages
+brew bundle --global
+```
+
+Done! Your Mac is set up exactly like your current one.
+
+## Vaultwarden Integration
 
 **Server:** `https://vault.int.cdcs.dev`
 
-### Initial Setup
-
-1. **Configure Bitwarden CLI:**
-   ```bash
-   bw config server https://vault.int.cdcs.dev
-   ```
-
-2. **Login:**
-   ```bash
-   bw login caio.cdcs@gmail.com
-   ```
-
-3. **Unlock vault (store session):**
-   ```bash
-   export BW_SESSION=$(bw unlock --raw)
-   ```
-
-4. **Apply dotfiles:**
-   ```bash
-   chezmoi apply
-   ```
-
 ### How It Works
 
-Chezmoi templates fetch secrets from Vaultwarden using:
+Templates in this repo use Vaultwarden to fetch secrets:
 
 ```
 {{ bitwarden "item" "Item Name" }}
 ```
 
-## Examples
+Secrets stay in Vaultwarden. Templates are in git. Perfect security! 🔒
 
-### SSH Private Key
+### Examples
 
-1. **Store in Vaultwarden:**
-   - Type: Secure Note
-   - Name: "SSH Private Key"
-   - Notes: Paste your `~/.ssh/id_ed25519` content
+#### SSH Private Key
 
-2. **Template:** `private_dot_ssh/private_id_ed25519.tmpl`
-   ```
-   {{- if (bitwarden "item" "SSH Private Key") -}}
-   {{ (bitwarden "item" "SSH Private Key").notes }}
-   {{- end -}}
-   ```
+**Store in Vaultwarden:**
+- Type: Secure Note
+- Name: "SSH Private Key"
+- Notes: Paste your private key
 
-### Environment Variables (NPM, GitHub, etc.)
+**Template:** `private_dot_ssh/private_id_ed25519.tmpl`
+```
+{{- if (bitwarden "item" "SSH Private Key") -}}
+{{ (bitwarden "item" "SSH Private Key").notes }}
+{{- end -}}
+```
 
-Store tokens in Vaultwarden, use in shell:
+#### Environment Variables
 
 **In `.zshrc.tmpl`:**
 ```bash
-# GitHub Token
 export GITHUB_TOKEN="{{ (bitwarden "item" "GitHub Token").password }}"
-
-# NPM Token
 export NPM_TOKEN="{{ (bitwarden "item" "NPM Token").password }}"
-
-# JFrog (if needed later)
-export JFROG_TOKEN="{{ (bitwarden "item" "JFrog Token").password }}"
 ```
 
-### GPG Signing Key
-
-**In `.gitconfig.tmpl`:**
-```toml
-[user]
-    email = {{ .email }}
-    name = "Caio Silva"
-    signingkey = {{ (bitwarden "item" "GPG Signing Key ID").password }}
-
-[commit]
-    gpgsign = true
-```
-
-### AWS Credentials
-
-**Store in Vaultwarden:**
-- Name: "AWS Access Key"
-- Username: Access Key ID
-- Password: Secret Access Key
-
-**In `.aws/credentials.tmpl`:**
-```ini
-[default]
-aws_access_key_id = {{ (bitwarden "item" "AWS Access Key").username }}
-aws_secret_access_key = {{ (bitwarden "item" "AWS Access Key").password }}
-```
-
-## Useful Commands
+## Common Commands
 
 ```bash
-# List all items
-bw list items | jq -r '.[].name'
+# Package management
+brew bundle dump --global --force   # Update Brewfile
+brew bundle --global                 # Install from Brewfile
 
-# Search for specific item
-bw get item "SSH Private Key"
+# Dotfile management
+chezmoi edit ~/.zshrc               # Edit file
+chezmoi diff                        # See changes
+chezmoi apply -v                    # Apply changes
+chezmoi add ~/.newconfig            # Track new file
 
-# Get item by ID
-bw get item <item-id>
+# Bitwarden
+export BW_SESSION=$(bw unlock --raw)  # Unlock vault
+bw list items | jq -r '.[].name'      # List items
+alias bwu='export BW_SESSION=$(bw unlock --raw)'  # Quick unlock
 
-# Test template before applying
-chezmoi execute-template < template-file.tmpl
-
-# See what would change
-chezmoi diff
-
-# Apply with verbose output
-chezmoi apply -v
-
-# Re-unlock if session expires
-export BW_SESSION=$(bw unlock --raw)
+# Git
+chezmoi cd && git status            # Check repo status
+chezmoi cd && git push              # Push changes
 ```
 
-## File Naming Convention
+## File Structure
 
-Chezmoi uses special prefixes:
-
-- `dot_` → `.` (dotfile)
-- `private_` → file with 0600 permissions
-- `executable_` → file with executable bit
-- `.tmpl` → template (processed)
-
-Examples:
-- `dot_zshrc.tmpl` → `~/.zshrc` (template)
-- `private_dot_ssh/private_id_ed25519.tmpl` → `~/.ssh/id_ed25519` (0600, template)
-- `dot_config/ghostty/config` → `~/.config/ghostty/config` (plain file)
+```
+~/.local/share/chezmoi/
+├── .chezmoi.toml.tmpl              # Config with Vaultwarden server
+├── Brewfile                        # All packages (76+)
+├── README.md                       # This file
+├── dot_zshrc                       # Shell config
+├── dot_gitconfig                   # Git config
+├── dot_config/
+│   ├── ghostty/config              # Terminal
+│   ├── mise/config.toml            # Tool versions
+│   ├── jj/config.toml              # Jujutsu VCS
+│   └── ...
+└── private_dot_ssh/
+    └── private_id_ed25519.tmpl     # SSH key (from Vaultwarden)
+```
 
 ## Security
 
 ✅ **Safe to commit:**
-- `.chezmoi.toml.tmpl` (variables only)
-- Template files (`.tmpl`)
-- Server URL
-- Email address
+- Templates (`.tmpl` files)
+- Config with server URL
+- Brewfile
 
-❌ **Never committed:**
+❌ **Never in git:**
 - Actual secrets (in Vaultwarden)
-- `BW_SESSION` token
-- Private keys
-- Passwords/tokens
-
-## New Machine Setup
-
-```bash
-# Install dependencies
-brew install chezmoi bitwarden-cli
-
-# Configure server
-bw config server https://vault.int.cdcs.dev
-
-# Login
-bw login caio.cdcs@gmail.com
-
-# Clone dotfiles
-chezmoi init --apply https://github.com/YOUR_USERNAME/dotfiles.git
-
-# Unlock and apply
-export BW_SESSION=$(bw unlock --raw)
-chezmoi apply -v
-```
+- Private keys (generated from templates)
+- Session tokens
 
 ## Tips
 
-### Auto-unlock in .zshrc
+### Auto-update Brewfile
 
-Add to your shell config:
+Add to `.zshrc`:
 ```bash
-# Check if bw is unlocked, if not prompt
+alias brewup='brew update && brew upgrade && brew bundle dump --global --force && chezmoi re-add Brewfile'
+```
+
+### Bitwarden session helper
+
+Add to `.zshrc`:
+```bash
+# Check if vault is unlocked
 if command -v bw &> /dev/null; then
     if ! bw unlock --check &> /dev/null; then
-        echo "🔒 Bitwarden vault locked. Unlock to load secrets."
-        # Optionally auto-unlock:
-        # export BW_SESSION=$(bw unlock --raw)
+        echo "🔒 Vaultwarden locked. Run: bwu"
     fi
 fi
-```
 
-### Session Timeout
-
-Session expires after inactivity. Re-unlock:
-```bash
-export BW_SESSION=$(bw unlock --raw)
-```
-
-Or add to `.zshrc`:
-```bash
 alias bwu='export BW_SESSION=$(bw unlock --raw)'
 ```
 
 ---
 
-**Your secrets stay in Vaultwarden. Templates stay in git. Perfect!** 🔒
+**Everything in one repo. Simple. Secure. Reproducible.** ✨
