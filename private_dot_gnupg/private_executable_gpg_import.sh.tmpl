@@ -1,0 +1,8 @@
+#!/bin/bash
+{{- if (bitwarden "item" "GPG Private Key") }}
+if [ -f ~/.gnupg/gpg_key.asc ]; then
+    gpg --batch --import ~/.gnupg/gpg_key.asc
+    echo "✓ GPG key imported"
+    gpg --list-secret-keys
+fi
+{{- end }}

@@ -22,10 +22,10 @@ brew install chezmoi bitwarden-cli
 
 # Configure Vaultwarden server
 bw config server https://vault.int.cdcs.dev
-bw login caio.cdcs@gmail.com
+bw login caio@cdcs.dev
 
 # Clone and apply dotfiles
-chezmoi init --apply git@github.com:YOUR_USERNAME/dotfiles.git
+chezmoi init --apply git@github.com:caiocdcs/dotfiles.git
 
 # Unlock Vaultwarden and apply secrets
 export BW_SESSION=$(bw unlock --raw)
@@ -49,7 +49,7 @@ Templates in this repo use Vaultwarden to fetch secrets:
 {{ bitwarden "item" "Item Name" }}
 ```
 
-Secrets stay in Vaultwarden. Templates are in git. Perfect security! 🔒
+Secrets stay in Vaultwarden. Templates are in git. Perfect security! 
 
 ### Examples
 
@@ -144,7 +144,7 @@ Add to `.zshrc`:
 # Check if vault is unlocked
 if command -v bw &> /dev/null; then
     if ! bw unlock --check &> /dev/null; then
-        echo "🔒 Vaultwarden locked. Run: bwu"
+        echo "Vaultwarden locked. Run: bwu"
     fi
 fi
 
@@ -153,4 +153,4 @@ alias bwu='export BW_SESSION=$(bw unlock --raw)'
 
 ---
 
-**Everything in one repo. Simple. Secure. Reproducible.** ✨
+**Everything in one repo. Simple. Secure. Reproducible.**
