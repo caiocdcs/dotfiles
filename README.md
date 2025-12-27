@@ -4,10 +4,11 @@ Complete Mac setup with chezmoi + Vaultwarden for secret management.
 
 ## What's Included
 
-- **Shell configs:** .zshrc, .zprofile, .p10k.zsh (Powerlevel10k)
+- **Shell configs:** .zshrc, .zprofile, .zshenv, .bash_profile, .profile, .p10k.zsh (Powerlevel10k)
 - **Git config:** .gitconfig with signing enabled
-- **App configs:** ghostty, fish, nushell, mise, jj, gh
+- **App configs:** ghostty, fish, nushell, mise, jj, gh, git, zed
 - **SSH config:** .ssh/config
+- **Terminal configs:** .tmux.conf (with detailed explanations), .vimrc
 - **Brewfile:** All 76+ packages
 - **Secrets:** Managed via self-hosted Vaultwarden
 
@@ -105,10 +106,14 @@ chezmoi cd && git push              # Push changes
 ├── .chezmoi.toml.tmpl              # Config with Vaultwarden server
 ├── Brewfile                        # All packages (76+)
 ├── README.md                       # This file
-├── dot_zshrc                       # Shell config
+├── dot_zshrc                       # ZSH config
+├── dot_profile                     # Shell profile (LM Studio, cargo)
+├── dot_tmux.conf                   # Tmux config (289 lines, fully documented)
+├── dot_vimrc                       # Vim config
 ├── dot_gitconfig                   # Git config
 ├── dot_config/
 │   ├── ghostty/config              # Terminal
+│   ├── zed/settings.json           # Zed editor
 │   ├── mise/config.toml            # Tool versions
 │   ├── jj/config.toml              # Jujutsu VCS
 │   └── ...
@@ -130,9 +135,9 @@ chezmoi cd && git push              # Push changes
 
 ## Tips
 
-### Auto-update Brewfile
+### Auto-update Brewfile (Already included!)
 
-Add to `.zshrc`:
+The `brewup` alias is already in `.zshrc`:
 ```bash
 alias brewup='brew update && brew upgrade && brew bundle dump --global --force && chezmoi re-add Brewfile'
 ```
