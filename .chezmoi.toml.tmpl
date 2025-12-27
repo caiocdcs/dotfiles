@@ -1,0 +1,9 @@
+{{- $email := "caio.cdcs@gmail.com" -}}
+{{- $vaultwardenServer := "https://vault.int.cdcs.dev" -}}
+
+[data]
+    email = {{ $email | quote }}
+    vaultwardenServer = {{ $vaultwardenServer | quote }}
+
+[bitwarden]
+    command = "bw"
