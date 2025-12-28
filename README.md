@@ -104,7 +104,7 @@ chezmoi cd && git push              # Push changes
 ```
 ~/.local/share/chezmoi/
 ├── .chezmoi.toml.tmpl              # Config with Vaultwarden server
-├── Brewfile                        # All packages (76+)
+├── dot_Brewfile                    # All packages (76+) at ~/.Brewfile
 ├── README.md                       # This file
 ├── dot_zshrc                       # ZSH config
 ├── dot_profile                     # Shell profile (LM Studio, cargo)
