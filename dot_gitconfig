@@ -37,8 +37,8 @@
 	autocrlf = input
 [user]
 	name = Caio Silva
-	signingkey = EB3CBE9AB8E39B60
-	email = caio.cdcs@gmail.com
+	signingkey = 1419908907B22708
+	email = caio@cdcs.dev
 
 [includeIf "gitdir:~/workspace/trustly/"]
     path = ~/.gitconfig-work
