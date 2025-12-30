@@ -1,6 +1,6 @@
-{{- if (bitwarden "item" "SSH Key") -}}
-{{- $item := bitwarden "item" "SSH Key" -}}
-{{- if $item.notes -}}
-{{ $item.notes }}
+{{- if (bitwarden "item" "Personal key") -}}
+{{- $item := bitwarden "item" "Personal key" -}}
+{{- if $item.sshKey.privateKey -}}
+{{ $item.sshKey.privateKey }}
 {{- end -}}
 {{- end -}}
