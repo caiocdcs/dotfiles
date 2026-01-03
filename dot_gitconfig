@@ -34,14 +34,14 @@
     ignorecase = false
     pager = delta
     excludesfile = ~/.gitignore
-   autocrlf = input
+    autocrlf = input
 [user]
-	name = Caio Silva
-	signingkey = 1419908907B22708
-	email = caio@cdcs.dev
+   name = Caio Silva
+   signingkey = 1419908907B22708
+   email = caio@cdcs.dev
 
 [includeIf "gitdir:~/workspace/trustly/"]
-    path = ~/.gitconfig-work
+   path = ~/.gitconfig-work
 [merge "mergiraf"]
-	name = mergiraf
-	driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L
+   name = mergiraf
+   driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L
