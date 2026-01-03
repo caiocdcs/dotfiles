@@ -11,8 +11,8 @@
     "always_allow_tool_actions": true,
     "default_profile": "write",
     "default_model": {
-      "provider": "copilot_chat",
-      "model": "claude-sonnet-4.5",
+      "provider": "amazon-bedrock",
+      "model": "claude-sonnet-4-5",
     },
     "model_parameters": [],
   },
@@ -176,6 +176,14 @@
       "binary": {
         "path": "/Users/caiocesarsilva/workspace/playground/zig/breeze/zig-out/bin/breeze",
         "arguments": ["--lsp"],
+      },
+    },
+    "nil": {
+      "initialization_options": {
+        "flake": {
+          "autoArchive": true,
+          "autoEvalInputs": true,
+        },
       },
     },
   },

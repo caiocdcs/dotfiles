@@ -30,11 +30,11 @@
     enabled = true
     autoupdate = true
 [core]
-    editor = zed --wait
-	ignorecase = false
-	pager = delta
+    editor = vim
+    ignorecase = false
+    pager = delta
     excludesfile = ~/.gitignore
-	autocrlf = input
+   autocrlf = input
 [user]
 	name = Caio Silva
 	signingkey = 1419908907B22708
